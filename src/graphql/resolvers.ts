@@ -1,4 +1,4 @@
-import { getEvaluations, getVendor } from '../dbQueries';
+import { getEvaluations } from '../dbQueries';
 
 import { Vendor, Evaluation } from '../entities';
 
@@ -9,7 +9,11 @@ export default {
     },
   },
   Evaluation: {
-    vendor: async (evaluation: Evaluation): Promise<Vendor | undefined> =>
-      await getVendor(evaluation.vendorId),
+    vendor: async (
+      evaluation: Evaluation,
+      args: any,
+      ctx: any,
+    ): Promise<Vendor | undefined> =>
+      await ctx.vendorLoader.load(evaluation.vendorId),
   },
 };

@@ -2,13 +2,19 @@ import { SelectQueryBuilder, getConnection } from 'typeorm';
 import { Vendor, Evaluation } from './entities';
 import filterQuery from './filterQuery';
 
-export const getVendor = async (
-  vendorId: number,
-): Promise<Vendor | undefined> => {
-  return await getConnection()
-    .createQueryBuilder(Vendor, 'vendor')
-    .where('vendor.id = :vendorId', { vendorId })
-    .getOne();
+const filterHandlers: FilterHandlerFunction<SelectQueryBuilder<Evaluation>> = {
+  status: (query: SelectQueryBuilder<Evaluation>, value: string) =>
+    query.andWhere('evaluation.status = :status', { status: value }),
+  accessType: (query: SelectQueryBuilder<Evaluation>, value: string) =>
+    query.andWhere('evaluation.access_type = :accessType', {
+      accessType: value,
+    }),
+  vendorName: (query: SelectQueryBuilder<Evaluation>, value: string) =>
+    query.andWhere('vendor.name = :vendorName', { vendorName: value }),
+  vendorType: (query: SelectQueryBuilder<Evaluation>, value: string) =>
+    query.andWhere('vendor.vendor_type = :vendorType', {
+      vendorType: value,
+    }),
 };
 
 export const getEvaluations = async (args: any): Promise<Array<Evaluation>> => {
@@ -17,17 +23,13 @@ export const getEvaluations = async (args: any): Promise<Array<Evaluation>> => {
     .leftJoinAndSelect('evaluation.vendor', 'vendor');
 
   if (args.q !== undefined) {
-    console.log({ args });
     const { filters }: { filters: Array<Filter> } = JSON.parse(args.q);
 
-    const query = filterQuery<Evaluation>(queryBuilder, filters, {
-      status: (query: SelectQueryBuilder<Evaluation>, value: string) =>
-        query.where('evaluation.status = :value', { value }),
-      accessType: (query: SelectQueryBuilder<Evaluation>, value: string) =>
-        query.where('evaluation.access_type = :value', { value }),
-      vendorName: (query: SelectQueryBuilder<Evaluation>, value: string) =>
-        query.where('vendor.name = :value', { value }),
-    });
+    const query = filterQuery<Evaluation>(
+      queryBuilder,
+      filters,
+      filterHandlers,
+    );
 
     return await query.getMany();
   }

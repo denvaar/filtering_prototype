@@ -3,7 +3,7 @@ import { createConnection } from 'typeorm';
 
 import resolvers from './graphql/resolvers';
 import typeDefs from './graphql/typeDefs';
-// import { authorLoader, bookLoader } from './dataLoaders';
+import { vendorLoader } from './dataLoaders';
 
 /* main */
 (async () => {
@@ -12,12 +12,11 @@ import typeDefs from './graphql/typeDefs';
   const apolloServer = new ApolloServer({
     typeDefs,
     resolvers,
-    // context: ({ req, res }: { req: Request; res: Response }) => {
-    //   return {
-    //     authorLoader: authorLoader(),
-    //     bookLoader: bookLoader(),
-    //   };
-    // },
+    context: ({ req, res }: { req: Request; res: Response }) => {
+      return {
+        vendorLoader: vendorLoader(),
+      };
+    },
   });
 
   apolloServer
