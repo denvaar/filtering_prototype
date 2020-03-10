@@ -1,0 +1,40 @@
+{
+    "name": "filter-prototype",
+    "version": "1.0.0",
+    "description": "",
+    "scripts": {
+        "dev": "ts-node-dev src/index.ts",
+        "tsc-watch": "tsc --watch",
+        "build": "tsc -p .",
+        "start": "ts-node dist/index.js",
+        "lint": "eslint src/**/*.ts",
+        "typeorm": "ts-node node_modules/typeorm/cli.js",
+        "initdb": "ts-node src/initdb.ts && npm run typeorm migration:run"
+    },
+    "keywords": [],
+    "author": "denvaar",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/graphql": "^14.5.0",
+        "@types/node": "^13.7.4",
+        "@typescript-eslint/eslint-plugin": "^2.20.0",
+        "@typescript-eslint/parser": "^2.20.0",
+        "eslint": "^6.8.0",
+        "eslint-config-prettier": "^6.10.0",
+        "eslint-plugin-prettier": "^3.1.2",
+        "nodemon": "^2.0.2",
+        "prettier": "^1.19.1",
+        "ts-node": "^8.6.2",
+        "ts-node-dev": "^1.0.0-pre.44",
+        "tsconfig-paths": "^3.9.0",
+        "typescript": "^3.8.2"
+    },
+    "dependencies": {
+        "apollo-server": "^2.10.1",
+        "dataloader": "^2.0.0",
+        "graphql": "^14.6.0",
+        "graphql-tools": "^4.0.7",
+        "pg": "^7.18.2",
+        "typeorm": "^0.2.22"
+    }
+}
