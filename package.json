@@ -30,7 +30,7 @@
         "typescript": "^3.8.2"
     },
     "dependencies": {
-        "apollo-server": "^2.10.1",
+        "apollo-server": "^2.14.2",
         "dataloader": "^2.0.0",
         "graphql": "^14.6.0",
         "graphql-tools": "^4.0.7",
